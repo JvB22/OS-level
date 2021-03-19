@@ -6,6 +6,16 @@
 #include <sys/wait.h>
 using namespace std;
 
+string getstring(){
+    int fd;
+    char *prompt = (char *) calloc(100, sizeof(char));
+    fd = open("configuratiebestand.txt", O_RDONLY);
+    read(fd, prompt, 100);
+    string prompt2=prompt;
+    close(fd);
+    free(prompt);
+    return prompt2;
+}
 void new_file(){
     string name;
     string text;
@@ -100,12 +110,14 @@ void src() // Voorbeeld: Gebruikt SYS_open en SYS_read om de source van de shell
         std::cout << byte; }                                  //   zet de gelezen byte in "byte" zodat deze geschreven kan worden.
 
 
-int main()
-{ std::string input;
-    std::string prompt = "Voer een commando in: ";
 
+int main()
+
+{ std::string input;
+   //string prompt2=getstring();    //wanneer ik deze functie gebruik, werkt alles goed, behalve testShell.sh
+   string prompt2 = "Voer een commando in";     //wanneer ik deze functie gebruik, werkt alles inclusief testshell.sh, maar dan haal ik geen invoer meer uit het bestand.
     while(true)
-    { std::cout << prompt;
+    {cout << prompt2;
         std::getline(std::cin, input);
         if (input == "new_file") new_file();
         else if (input == "ls") list();
@@ -117,3 +129,4 @@ int main()
         else if (input == "error") return 1;
 
         if (std::cin.eof()) return 0; } }
+
